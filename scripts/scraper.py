@@ -19,7 +19,6 @@ chrome_options = Options()
 
 driver = webdriver.Chrome(PATH, options=chrome_options)
 url_login = "https://www.linkedin.com/login?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin"
-url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
 driver.get(url_login)
 
 dataJSON = {'resultData': []}
@@ -43,21 +42,30 @@ jobs_list = []
 # Add LinkedIn Jobs to DF
 def addJobToDF(soup_element):
     try:
-        title = soup_element.select("a[class*=_title]")[0].getText()
+        title = soup_element.select("a[class*=_title]")[0].getText().strip("',/\n")
     except:
-        title = "None"
+        print("Nope")
+        title = None
     try:
-        company = soup_element.select("a[class*=_company-name]")[0].getText()
+        company = soup_element.select("a[class*=_company-name]")[0].getText().strip("',/\n")
     except:
-        company = "None"
+        company = None
     try:
-        location = soup_element.select("li[class*=job-card-container__metadata-item]")[0].getText()
+        location = soup_element.select("li[class*=job-card-container__metadata-item]")[0].getText().strip("',/\n")
     except:
-        location = "None"
+        location = None
+
+    t_el = driver.find_element_by_id(soup_element.select("a[class*=_title]")[0].get("id"))
+    t_el.click()
+    time.sleep(2)
+    description = bs4.BeautifulSoup(driver.page_source).select("div[class*=jobs-description-content__text]")[0].getText().strip("',/\n")
+
     new_row = {"Title": title,
-                    "Company": company,
-                    "Location": location}
-    print(new_row)
+               "Company": company,
+               "Location": location,
+               "Description": description}
+
+    # print(new_row)
     jobs_list.append(new_row)
 
 
@@ -71,22 +79,35 @@ driver.get("https://www.linkedin.com/")
 driver.find_element_by_id("session_key").send_keys(accountDetailsConfig['CREDS']['USERNAME'])
 driver.find_element_by_id("session_password").send_keys(accountDetailsConfig['CREDS']['PASSWORD'])
 driver.find_elements_by_class_name("sign-in-form__submit-button")[0].click()
-driver.get(url_jobs)
-time.sleep(10)
+driver.set_window_size(1928, 1080)
+i = 25
+url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
 
-# Get linkedin jobs
-soup = bs4.BeautifulSoup(driver.page_source)
-# For each job card, get data
-for el in soup.select('li[class*="jobs-search-results_"]'):
-    addJobToDF(el)
+while i <= 100:
+    driver.get(url_jobs)
+    time.sleep(10)
+    driver.execute_script("window.scrollBy(0, arguments[0]);", 1300)
+    time.sleep(5)
+    driver.execute_script("window.scrollBy(0, arguments[0]);", 1000)
+    time.sleep(5)
+
+    # Get linkedin jobs
+    soup = bs4.BeautifulSoup(driver.page_source)
+    # For each job card, get data
+    for el in soup.select('li[class*="jobs-search-results_"]'):
+        addJobToDF(el)
+    url_jobs = "https://www.linkedin.com/jobs/search/?alertAction=viewjobs&geoId=100565514&keywords=data%20science" \
+               "&location=Belgi%C3%AB&start=" + str(i)
+    i = i + 25
 
 jobs_df: DataFrame = pd.DataFrame(jobs_list)
 print(jobs_df.head())
+print(jobs_df.info())
 
 # Close browser
 driver.quit()
 
 # Make Json
-js = jobs_df.to_json()
+js = jobs_df.to_json(orient="records")
 with open("../data/Jobcards.json", "w") as outfile:
     json.dump(js, outfile)
