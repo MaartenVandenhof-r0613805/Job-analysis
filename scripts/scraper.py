@@ -1,6 +1,8 @@
 import pandas as pd
 import configparser
 import time
+import json
+from pandas import DataFrame
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import bs4
@@ -73,12 +75,18 @@ driver.get(url_jobs)
 time.sleep(10)
 
 # Get linkedin jobs
-print("go")
 soup = bs4.BeautifulSoup(driver.page_source)
+# For each job card, get data
 for el in soup.select('li[class*="jobs-search-results_"]'):
     addJobToDF(el)
-print("done")
-jobs_df = pd.DataFrame(jobs_list)
+
+jobs_df: DataFrame = pd.DataFrame(jobs_list)
 print(jobs_df.head())
+
 # Close browser
 driver.quit()
+
+# Make Json
+js = jobs_df.to_json()
+with open("../data/Jobcards.json", "w") as outfile:
+    json.dump(js, outfile)
