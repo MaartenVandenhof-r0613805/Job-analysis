@@ -41,10 +41,11 @@ jobs_list = []
 
 # Add LinkedIn Jobs to DF
 def addJobToDF(soup_element):
+    time.sleep(1)
     try:
         title = soup_element.select("a[class*=_title]")[0].getText().strip("',/\n")
     except:
-        print("Nope")
+        print(soup_element)
         title = None
     try:
         company = soup_element.select("a[class*=_company-name]")[0].getText().strip("',/\n")
@@ -57,7 +58,7 @@ def addJobToDF(soup_element):
 
     t_el = driver.find_element_by_id(soup_element.select("a[class*=_title]")[0].get("id"))
     t_el.click()
-    time.sleep(2)
+    time.sleep(1)
     description = bs4.BeautifulSoup(driver.page_source).select("div[class*=jobs-description-content__text]")[0].getText().strip("',/\n")
 
     new_row = {"Title": title,
@@ -73,26 +74,29 @@ def addJobToDF(soup_element):
 # Initialize LinkedIn with local account details
 # (create your own config.ini with account details local and point to that path)
 accountDetailsConfig = configparser.ConfigParser()
-accountDetailsConfig.read('C:/Users/Maarten Van den hof/Documents/config.ini')
-# accountDetailsConfig.read('C:/Users/maart/Documents/config.ini')
+#accountDetailsConfig.read('C:/Users/Maarten Van den hof/Documents/config.ini')
+accountDetailsConfig.read('C:/Users/maart/Documents/config.ini')
 driver.get("https://www.linkedin.com/")
 driver.find_element_by_id("session_key").send_keys(accountDetailsConfig['CREDS']['USERNAME'])
 driver.find_element_by_id("session_password").send_keys(accountDetailsConfig['CREDS']['PASSWORD'])
 driver.find_elements_by_class_name("sign-in-form__submit-button")[0].click()
-driver.set_window_size(1928, 1080)
+#driver.set_window_size(1928, 2000)
 i = 25
 url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
 
 while i <= 100:
     driver.get(url_jobs)
-    time.sleep(10)
-    driver.execute_script("window.scrollBy(0, arguments[0]);", 1300)
     time.sleep(5)
-    driver.execute_script("window.scrollBy(0, arguments[0]);", 1000)
-    time.sleep(5)
-
     # Get linkedin jobs
     soup = bs4.BeautifulSoup(driver.page_source)
+    card_list = soup.select('li[class*="jobs-search-results_"]')
+    middle_card = driver.find_element_by_id(card_list[6].get("id"))
+    driver.execute_script("arguments[0].scrollIntoView()", middle_card)
+    time.sleep(2)
+    last_card = driver.find_element_by_id(card_list[len(card_list)-1].get("id"))
+    driver.execute_script("arguments[0].scrollIntoView()", last_card)
+    time.sleep(2)
+
     # For each job card, get data
     for el in soup.select('li[class*="jobs-search-results_"]'):
         addJobToDF(el)
