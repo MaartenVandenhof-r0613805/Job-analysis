@@ -42,6 +42,8 @@ jobs_list = []
 # Add LinkedIn Jobs to DF
 def addJobToDF(soup_element):
     time.sleep(1)
+    if soup_element.select("h3[class*=_title]"):
+        return
     try:
         title = soup_element.select("a[class*=_title]")[0].getText().strip("',/\n")
     except:
@@ -56,10 +58,14 @@ def addJobToDF(soup_element):
     except:
         location = None
 
-    t_el = driver.find_element_by_id(soup_element.select("a[class*=_title]")[0].get("id"))
-    t_el.click()
-    time.sleep(1)
-    description = bs4.BeautifulSoup(driver.page_source).select("div[class*=jobs-description-content__text]")[0].getText().strip("',/\n")
+    try:
+        t_el = driver.find_element_by_id(soup_element.select("a[class*=_title]")[0].get("id"))
+        t_el.click()
+        time.sleep(0.5)
+        description = bs4.BeautifulSoup(driver.page_source).select("div[class*=jobs-description-content__text]")[0] \
+            .getText().strip("',/\n")
+    except:
+        description = None
 
     new_row = {"Title": title,
                "Company": company,
@@ -80,26 +86,40 @@ driver.get("https://www.linkedin.com/")
 driver.find_element_by_id("session_key").send_keys(accountDetailsConfig['CREDS']['USERNAME'])
 driver.find_element_by_id("session_password").send_keys(accountDetailsConfig['CREDS']['PASSWORD'])
 driver.find_elements_by_class_name("sign-in-form__submit-button")[0].click()
-#driver.set_window_size(1928, 2000)
+
 i = 25
 url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
 
-while i <= 100:
+while i <= 1000:
     driver.get(url_jobs)
-    time.sleep(5)
-    # Get linkedin jobs
-    soup = bs4.BeautifulSoup(driver.page_source)
-    card_list = soup.select('li[class*="jobs-search-results_"]')
-    middle_card = driver.find_element_by_id(card_list[6].get("id"))
-    driver.execute_script("arguments[0].scrollIntoView()", middle_card)
-    time.sleep(2)
-    last_card = driver.find_element_by_id(card_list[len(card_list)-1].get("id"))
-    driver.execute_script("arguments[0].scrollIntoView()", last_card)
-    time.sleep(2)
+    time.sleep(7)
 
-    # For each job card, get data
-    for el in soup.select('li[class*="jobs-search-results_"]'):
-        addJobToDF(el)
+    try:
+        # Get linkedin jobs
+        soup = bs4.BeautifulSoup(driver.page_source)
+        card_list = soup.select('li[class*="jobs-search-results_"]')
+        middle_card = driver.find_element_by_id(card_list[7].get("id"))
+        driver.execute_script("arguments[0].scrollIntoView()", middle_card)
+        time.sleep(1)
+        middle_card_2 = driver.find_element_by_id(card_list[14].get("id"))
+        driver.execute_script("arguments[0].scrollIntoView()", middle_card_2)
+        time.sleep(1)
+        middle_card_3 = driver.find_element_by_id(card_list[21].get("id"))
+        driver.execute_script("arguments[0].scrollIntoView()", middle_card_3)
+        time.sleep(1)
+        last_card = driver.find_element_by_id(card_list[len(card_list) - 2].get("id"))
+        driver.execute_script("arguments[0].scrollIntoView()", last_card)
+        time.sleep(1)
+
+        soup = bs4.BeautifulSoup(driver.page_source)
+        loaded_list = soup.select('li[class*="jobs-search-results_"]')
+
+        # For each job card, get data
+        for el in loaded_list:
+            addJobToDF(el)
+    except:
+        print("page source error")
+
     url_jobs = "https://www.linkedin.com/jobs/search/?alertAction=viewjobs&geoId=100565514&keywords=data%20science" \
                "&location=Belgi%C3%AB&start=" + str(i)
     i = i + 25
