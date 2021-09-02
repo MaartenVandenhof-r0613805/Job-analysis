@@ -13,7 +13,12 @@ After loading the data in a Jupyter notebook, the data is cleaned by first dropp
 Here the data is prepared for analysis and NLP. The words are all set to lowercase, the language of the description is detected wherafter it is lemmanized.
 After this the stop words are removed together with the punctuations and add experience level.
 To end the data processing we create bigrams from the words that appear most frequently together.
-![image](https://user-images.githubusercontent.com/28530143/131884860-977b0ba2-7e25-483c-93b5-ec6a224b9ab0.png)
+![image](https://user-images.githubusercontent.com/28530143/131885368-0463096a-076e-4889-a820-f0499a59719f.png)
 
 
-### 4. 
+### 4. Analysis
+Here we focus on 3 main categories: location, job type and experience level.
+This is a snapshot of the results:
+![image](https://user-images.githubusercontent.com/28530143/131885578-b8b6d9f3-7ecb-4817-9e79-f8e5de85ca08.png)
+![image](https://user-images.githubusercontent.com/28530143/131885614-40139e12-f277-4bde-b8c7-5e152198f643.png)
+![image](https://user-images.githubusercontent.com/28530143/131885644-2433980a-14a4-47d4-a84b-ac67367abf70.png)
