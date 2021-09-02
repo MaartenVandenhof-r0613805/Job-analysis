@@ -23,7 +23,7 @@ This is a snapshot of the results:
 ![image](https://user-images.githubusercontent.com/28530143/131886173-4fbcc66a-e06f-415a-9989-77185a5812cd.png)
 ![image](https://user-images.githubusercontent.com/28530143/131886203-f5877aa5-2383-46b1-9393-eb9725f3f750.png)
 
-We can also look at the technologies required for eacht job category:
+We can also look at the technologies required for eacht job category: \n
 ![image](https://user-images.githubusercontent.com/28530143/131886578-c3991b7e-417b-44dd-9b1f-473fe062d4b3.png)
 ![image](https://user-images.githubusercontent.com/28530143/131886608-4e895561-74e3-4ee8-8b74-8462efc04593.png)
 ![image](https://user-images.githubusercontent.com/28530143/131886635-8751d11e-4bc2-4099-b655-2b8dab6cca23.png)
