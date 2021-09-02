@@ -22,3 +22,8 @@ This is a snapshot of the results:
 ![image](https://user-images.githubusercontent.com/28530143/131886114-936f4f41-3aa4-4624-a535-865450828a8b.png)
 ![image](https://user-images.githubusercontent.com/28530143/131886173-4fbcc66a-e06f-415a-9989-77185a5812cd.png)
 ![image](https://user-images.githubusercontent.com/28530143/131886203-f5877aa5-2383-46b1-9393-eb9725f3f750.png)
+
+We can also look at the technologies required for eacht job category:
+![image](https://user-images.githubusercontent.com/28530143/131886407-08d1f41c-ea5b-4fe0-a7af-1a3000f42c65.png)
+![image](https://user-images.githubusercontent.com/28530143/131886431-7f79fda2-94a7-420c-8243-576db396fbd9.png)
+![image](https://user-images.githubusercontent.com/28530143/131886462-f62373c4-bd02-44f5-81c8-cbafb5621e00.png)
