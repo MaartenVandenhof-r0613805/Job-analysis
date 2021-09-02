@@ -19,6 +19,6 @@ To end the data processing we create bigrams from the words that appear most fre
 ### 4. Analysis
 Here we focus on 3 main categories: location, job type and experience level.
 This is a snapshot of the results:
-![image](https://user-images.githubusercontent.com/28530143/131885578-b8b6d9f3-7ecb-4817-9e79-f8e5de85ca08.png) { width: 200px; }
-![image](https://user-images.githubusercontent.com/28530143/131885614-40139e12-f277-4bde-b8c7-5e152198f643.png) { width: 200px; }
-![image](https://user-images.githubusercontent.com/28530143/131885644-2433980a-14a4-47d4-a84b-ac67367abf70.png) { width: 200px; }
+![image](https://user-images.githubusercontent.com/28530143/131886114-936f4f41-3aa4-4624-a535-865450828a8b.png)
+![image](https://user-images.githubusercontent.com/28530143/131886173-4fbcc66a-e06f-415a-9989-77185a5812cd.png)
+![image](https://user-images.githubusercontent.com/28530143/131886203-f5877aa5-2383-46b1-9393-eb9725f3f750.png)
