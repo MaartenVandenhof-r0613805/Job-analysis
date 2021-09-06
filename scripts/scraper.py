@@ -39,8 +39,8 @@ jobs_class = "jobs-search-results__list-item"
 jobs_list = []
 
 
-# Add LinkedIn Jobs to DF
 def addJobToDF(soup_element):
+    """Add title, company, location and description from soup element to local dataframe"""
     time.sleep(1)
     if soup_element.select("h3[class*=_title]"):
         return
@@ -80,15 +80,19 @@ def addJobToDF(soup_element):
 # Initialize LinkedIn with local account details
 # (create your own config.ini with account details local and point to that path)
 accountDetailsConfig = configparser.ConfigParser()
-#accountDetailsConfig.read('C:/Users/Maarten Van den hof/Documents/config.ini')
+# accountDetailsConfig.read('C:/Users/Maarten Van den hof/Documents/config.ini')
 accountDetailsConfig.read('C:/Users/maart/Documents/config.ini')
 driver.get("https://www.linkedin.com/")
 driver.find_element_by_id("session_key").send_keys(accountDetailsConfig['CREDS']['USERNAME'])
 driver.find_element_by_id("session_password").send_keys(accountDetailsConfig['CREDS']['PASSWORD'])
 driver.find_elements_by_class_name("sign-in-form__submit-button")[0].click()
 
+# i = amount of jobcards displayed on linkedin page
 i = 25
-url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
+
+# url with search term
+#url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
+url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=Machine%20Learning&location=Belgi%C3%AB"
 
 while i <= 1000:
     driver.get(url_jobs)
@@ -133,5 +137,5 @@ driver.quit()
 
 # Make Json
 js = jobs_df.to_json(orient="records")
-with open("../data/Jobcards.json", "w") as outfile:
+with open("../data/Jobcards_ml.json", "w") as outfile:
     json.dump(js, outfile)
