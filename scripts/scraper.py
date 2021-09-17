@@ -90,11 +90,15 @@ driver.find_elements_by_class_name("sign-in-form__submit-button")[0].click()
 # i = amount of jobcards displayed on linkedin page
 i = 25
 
-# url with search term
+# url with search term (terms = Data Science, Machine Learning, Data)
+# DS
 #url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data%20science&location=Belgi%C3%AB"
-url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=Machine%20Learning&location=Belgi%C3%AB"
+# ML
+#url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=Machine%20Learning&location=Belgi%C3%AB"
+# Data
+url_jobs = "https://www.linkedin.com/jobs/search/?geoId=100565514&keywords=data&location=Belgi%C3%AB"
 
-while i <= 1000:
+while i <= 5000:
     driver.get(url_jobs)
     time.sleep(7)
 
@@ -137,5 +141,5 @@ driver.quit()
 
 # Make Json
 js = jobs_df.to_json(orient="records")
-with open("../data/Jobcards_ml.json", "w") as outfile:
+with open("../data/Jobcards_data.json", "w") as outfile:
     json.dump(js, outfile)

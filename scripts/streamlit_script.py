@@ -38,7 +38,7 @@ with st.sidebar:
         df_show = de_cards
 
 # Create Bar chart
-st.subheader(title + ' jobs')
+st.subheader(title + ' job listings')
 counts = pd.DataFrame(df_show.groupby(["Location"])["Title"].count())
 st.bar_chart(counts)
 
