@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import json
+import altair as alt
 import matplotlib.pyplot as plt
 import streamlit as st
 
@@ -38,9 +38,23 @@ with st.sidebar:
         df_show = de_cards
 
 # Create Bar chart
-st.subheader(title + ' job listings')
-counts = pd.DataFrame(df_show.groupby(["Location"])["Title"].count())
-st.bar_chart(counts)
+df = pd.DataFrame(df_show.groupby(["Location", "Experience"])["Experience"].count().sort_values(ascending=False))
+df = df.rename(columns={"Experience": "Count"})
+df = df.reset_index()
+
+stacked_bar = alt.Chart(df).mark_bar().encode(
+    x='Location',
+    y='Count',
+    color='Experience',
+    tooltip=["Count", "Experience"]
+).properties(
+    width=800,
+    height=500,
+    title="Job type: " + title
+).interactive()
+st.altair_chart(stacked_bar)
 
 # Create map
 st.map(df_show)
+
+
