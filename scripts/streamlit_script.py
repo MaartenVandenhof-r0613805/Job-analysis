@@ -32,7 +32,7 @@ st.set_page_config(layout="wide")
 # Create buttons
 df_show = dc_cards
 title = "Data Science"
-st.sidebar.write('''## Select job type''')
+st.sidebar.write('''# Select job type''')
 with st.sidebar:
     if st.button("Data Science"):
         title = "Data Science"
@@ -59,8 +59,8 @@ st.write('''### Current job type shown:  *''' + title + '''*''')
 '''
 # Create horizontal layout for location
 col1, col2 = st.columns(2)
-col1.header('''Job postings in each city for *''' + title + '''* jobs''')
-col2.header('''Location of  *''' + title + '''* jobs on the map''')
+col1.header('''Amount of job posts in each city for *''' + title + '''* jobs''')
+col2.header('''Location of  *''' + title + '''* job posts on the map''')
 
 # Create Bar chart
 df = pd.DataFrame(df_show.groupby(["Location", "Experience"])["Experience"].count().sort_values(ascending=False))
@@ -73,7 +73,7 @@ stacked_bar = alt.Chart(df).mark_bar().encode(
     color='Experience',
     tooltip=["Count", "Experience"]
 ).properties(
-    width=700,
+    width=500,
     height=600,
     title="Job type: " + title
 ).interactive()
@@ -88,13 +88,13 @@ col2.map(df_show)
 '''
 # Create count chart
 horizontal_bar_count = alt.Chart(tech_df[title].value_counts().reset_index()).mark_bar().encode(
-    x=alt.X("index", title="Skills", sort=alt.EncodingSortField(field=title, op="count", order="ascending")),
+    x=alt.X("index", title="Tools", sort=alt.EncodingSortField(field=title, op="count", order="ascending")),
     y=alt.Y(title, title="Count"),
-    tooltip=[title]
+    tooltip=[alt.Tooltip(title, title="Count")]
 ).properties(
-    width=700,
+    width=500,
     height=600,
-    title="Most requested skilss in " + title
+    title="Most requested tools for a " + title
 ).interactive()
 
 st.altair_chart(horizontal_bar_count)
