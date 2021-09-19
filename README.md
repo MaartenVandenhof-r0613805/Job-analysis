@@ -1,6 +1,7 @@
 ## LinkedIn Job Analysis for Data Science
 ### TL;DR
 This project collects job postings for the term "Data Science" and analyses them to get insights on what the main locations, requirements and topics are.
+It also includes a small streamlit summary [here](https://jobanalysisbelgium.herokuapp.com/)
 This is still a work in progress.
 
 ### 1. Data Scraping
