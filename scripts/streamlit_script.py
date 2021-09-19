@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 # Load data
-cards_df = pd.read_csv("..\data\complete_df.csv")
+cards_df = pd.read_csv("complete_df.csv")
 cards_df["lon"] = cards_df["lng"]
 
 # Drop null
