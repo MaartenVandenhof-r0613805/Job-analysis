@@ -5,12 +5,11 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from pathlib import Path
 
-
-# Load path
-current_dir = Path.cwd()
+# Prepare data
 # Load data
 cards_df = pd.read_csv(Path(__file__).parents[1] / 'data' / 'complete_df.csv')
 cards_df["lon"] = cards_df["lng"]
+tech_df = pd.read_csv(Path(__file__).parents[1] / 'data' / 'tech_df.csv')
 
 # Drop null
 cards_df = cards_df.dropna()
@@ -26,6 +25,10 @@ da_cards = cards_df[da_titles]
 # Data engineers
 de_titles = [("engineer" in a) for a in cards_df["Title"]]
 de_cards = cards_df[de_titles]
+
+# Create layout
+# Insert title
+st.write("""""")
 
 # Create buttons
 df_show = dc_cards
@@ -47,12 +50,12 @@ df = df.rename(columns={"Experience": "Count"})
 df = df.reset_index()
 
 stacked_bar = alt.Chart(df).mark_bar().encode(
-    x='Location',
+    x=alt.X("Location", sort=alt.EncodingSortField(field="Count", op="count", order="descending")),
     y='Count',
     color='Experience',
     tooltip=["Count", "Experience"]
 ).properties(
-    width=800,
+    width=700,
     height=500,
     title="Job type: " + title
 ).interactive()
@@ -61,3 +64,16 @@ st.altair_chart(stacked_bar)
 # Create map
 st.map(df_show)
 
+## Job Specific skills
+# Create count chart
+horizontal_bar_count = alt.Chart(tech_df[title].value_counts().reset_index()).mark_bar().encode(
+    x=alt.X("index", title="Skills", sort=alt.EncodingSortField(field=title, op="count", order="ascending")),
+    y=alt.Y(title, title="Count"),
+    tooltip=[title]
+).properties(
+    width=700,
+    height=500,
+    title="Most used requested in " + title
+).interactive()
+
+st.altair_chart(horizontal_bar_count)
