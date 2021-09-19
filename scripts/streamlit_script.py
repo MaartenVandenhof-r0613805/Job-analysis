@@ -27,12 +27,12 @@ de_titles = [("engineer" in a) for a in cards_df["Title"]]
 de_cards = cards_df[de_titles]
 
 # Create layout
-# Insert title
-st.write("""""")
-
+# Use the full page instead of a narrow central column
+st.set_page_config(layout="wide")
 # Create buttons
 df_show = dc_cards
 title = "Data Science"
+st.sidebar.write('''## Select job type''')
 with st.sidebar:
     if st.button("Data Science"):
         title = "Data Science"
@@ -43,6 +43,22 @@ with st.sidebar:
     if st.button("Data Engineer"):
         title = "Data Engineer"
         df_show = de_cards
+
+# Create intro
+'''
+# LinkedIn job analysis for data jobs in Belgium
+
+Examining the job description results given by LinkedIn when searching for the term **Data Science** in Belgium.
+Select the job type in the left sidebar to see the results for the selected job.
+'''
+st.write('''### Current job type shown:  *''' + title + '''*''')
+'''
+# Location Analysis:
+'''
+# Create horizontal layout for location
+col1, col2 = st.columns(2)
+col1.header('''Job postings in each city for *''' + title + '''* jobs''')
+col2.header('''Location of  *''' + title + '''* jobs on the map''')
 
 # Create Bar chart
 df = pd.DataFrame(df_show.groupby(["Location", "Experience"])["Experience"].count().sort_values(ascending=False))
@@ -56,15 +72,18 @@ stacked_bar = alt.Chart(df).mark_bar().encode(
     tooltip=["Count", "Experience"]
 ).properties(
     width=700,
-    height=500,
+    height=600,
     title="Job type: " + title
 ).interactive()
-st.altair_chart(stacked_bar)
+col1.altair_chart(stacked_bar)
 
 # Create map
-st.map(df_show)
+col2.map(df_show)
 
-## Job Specific skills
+# Job Specific skills
+'''
+# Job Description Analysis
+'''
 # Create count chart
 horizontal_bar_count = alt.Chart(tech_df[title].value_counts().reset_index()).mark_bar().encode(
     x=alt.X("index", title="Skills", sort=alt.EncodingSortField(field=title, op="count", order="ascending")),
@@ -72,8 +91,8 @@ horizontal_bar_count = alt.Chart(tech_df[title].value_counts().reset_index()).ma
     tooltip=[title]
 ).properties(
     width=700,
-    height=500,
-    title="Most used requested in " + title
+    height=600,
+    title="Most requested skilss in " + title
 ).interactive()
 
 st.altair_chart(horizontal_bar_count)
