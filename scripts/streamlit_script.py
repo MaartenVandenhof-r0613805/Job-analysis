@@ -50,6 +50,8 @@ with st.sidebar:
 
 Examining the job description results given by LinkedIn when searching for the term **Data Science** in Belgium.
 Select the job type in the left sidebar to see the results for the selected job.
+
+The Git repository can be found [here](https://github.com/MaartenVandenhof-r0613805/Job-analysis).
 '''
 st.write('''### Current job type shown:  *''' + title + '''*''')
 '''
