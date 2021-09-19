@@ -9,7 +9,7 @@ from pathlib import Path
 # Load path
 current_dir = Path.cwd()
 # Load data
-cards_df = pd.read_csv(current_dir / 'complete_df.csv')
+cards_df = pd.read_csv(Path(__file__).parents[1] / 'data' / 'complete_df.csv')
 cards_df["lon"] = cards_df["lng"]
 
 # Drop null
