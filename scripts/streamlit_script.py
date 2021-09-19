@@ -48,8 +48,8 @@ with st.sidebar:
 '''
 # LinkedIn job analysis for data jobs in Belgium
 
-Examining the job description results given by LinkedIn when searching for the term **Data Science** in Belgium.
-Select the job type in the left sidebar to see the results for the selected job.
+Small examination of the job description results given by LinkedIn when searching for the term **Data Science** in 
+Belgium. Select the job type in the left sidebar to see the results for the selected job. 
 
 The Git repository can be found [here](https://github.com/MaartenVandenhof-r0613805/Job-analysis).
 '''
